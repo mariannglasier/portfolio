@@ -42,6 +42,7 @@ body {
     text-decoration: none;
 }
 
+/* add on and off buttons */
 .sound-button {
     position: absolute;
     right: 1rem;
@@ -99,6 +100,10 @@ body {
 
 .click-letters img:nth-child(3) {
     animation-delay: -1.4s;
+}
+
+.click-letters img:nth-child(4) {
+    scale: 0.90;
 }
 
 .click-letters img:nth-child(4) {
