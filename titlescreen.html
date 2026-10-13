@@ -1,115 +1,288 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Mariann Glasier</title>
         <link rel="icon" type="image/jpg" href="images/favicon.jpg">
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            html,
+            body {
+                width: 100%;
+                min-height: 100%;
+                margin: 0;
+            }
+
+            body {
+                min-height: 100vh;
+                min-height: 100svh;
+                overflow: hidden;
+                background: #69d7ec;
+            }
+
+            .title-screen {
+                position: relative;
+                width: 100%;
+                min-height: 100vh;
+                min-height: 100svh;
+                overflow: hidden;
+            }
+
+            .ambient-background {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                pointer-events: none;
+            }
+
+            .title-screen-link {
+                position: absolute;
+                inset: 0;
+                z-index: 1;
+                display: block;
+                color: inherit;
+                text-decoration: none;
+            }
+
+            .sound-button {
+                position: absolute;
+                right: 1rem;
+                bottom: 1rem;
+                z-index: 2;
+                padding: 0.65rem 1rem;
+                border: 1px solid rgba(0, 0, 0, 0.25);
+                border-radius: 999px;
+                background: #fff;
+                color: #222;
+                font: inherit;
+                cursor: pointer;
+            }
+
+            .title-lockup {
+                position: absolute;
+                top: 2%;
+                left: 50%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: min(100vw, 1150px);
+                transform: translateX(-50%);
+            }
+
+            .title-card {
+                display: block;
+                width: 100%;
+                height: auto;
+            }
+
+            .click-letters {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: clamp(2px, 0.8vw, 9px);
+                margin-top: clamp(8px, 1.5vh, 16px);
+            }
+
+            .click-letters img {
+                display: block;
+                width: auto;
+                height: clamp(30px, 6vw, 64px);
+                animation: gentle-float 3.2s ease-in-out infinite;
+                will-change: transform;
+            }
+
+            .click-letters img:nth-child(2) {
+                animation-delay: -0.7s;
+            }
+
+            .click-letters img:nth-child(3) {
+                animation-delay: -1.4s;
+            }
+
+            .click-letters img:nth-child(4) {
+                animation-delay: -2.1s;
+            }
+
+            .click-letters img:nth-child(5) {
+                animation-delay: -2.8s;
+            }
+
+            .click-letters img:nth-child(6) {
+                animation-delay: -3.5s;
+            }
+
+            .title-screen-link.is-exiting .title-card {
+                visibility: hidden;
+            }
+
+            .title-screen-link.is-exiting .click-letters img {
+                animation: click-exit 550ms ease-in forwards;
+                animation-delay: calc(var(--exit-index) * 45ms);
+                transform-origin: center;
+            }
+
+            .click-letters img:nth-child(1) {
+                --exit-index: 0;
+                --exit-rotation: 540deg;
+            }
+
+            .click-letters img:nth-child(2) {
+                --exit-index: 1;
+                --exit-rotation: -540deg;
+            }
+
+            .click-letters img:nth-child(3) {
+                --exit-index: 2;
+                --exit-rotation: 720deg;
+            }
+
+            .click-letters img:nth-child(4) {
+                --exit-index: 3;
+                --exit-rotation: -720deg;
+            }
+
+            .click-letters img:nth-child(5) {
+                --exit-index: 4;
+                --exit-rotation: 540deg;
+            }
+
+            .click-letters img:nth-child(6) {
+                --exit-index: 5;
+                --exit-rotation: -540deg;
+            }
+
+            @keyframes click-exit {
+                to {
+                    transform: rotate(var(--exit-rotation)) scale(0);
+                }
+            }
+
+            @keyframes gentle-float {
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+
+                50% {
+                    transform: translateY(-5px);
+                }
+            }
+
+            @media (max-height: 560px) {
+                .title-lockup {
+                    top: 0;
+                    width: min(93vw, 820px);
+                }
+
+                .click-letters img {
+                    height: 34px;
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .click-letters img {
+                    animation: none;
+                }
+
+                .title-screen-link.is-exiting .click-letters img {
+                    visibility: hidden;
+                }
+            }
+        </style>
     </head>
     <body>
-        <div class="header">
-            <h1>Mariann Glasier</h1>
-        </div>
+        <main class="title-screen" aria-label="Portfolio title screen">
+            <video class="ambient-background" autoplay muted loop playsinline aria-hidden="true">
+                <source src="images/homescreen/title_screen.mp4" type="video/mp4">
+            </video>
+            <audio class="title-audio" src="sounds/title_screen.mp3" loop preload="auto"></audio>
+            <audio class="click-audio" src="sounds/click!.wav" preload="auto"></audio>
+            <button class="sound-button" type="button" hidden>Enable sound</button>
+            <a class="title-screen-link" href="home.html" aria-label="Enter portfolio">
+                <div class="title-lockup">
+                    <img class="title-card" src="images/homescreen/title_card.png" alt="Mariann's Life">
+                    <div class="click-letters" aria-label="Click">
+                        <img src="images/homescreen/click!/c.png" alt="">
+                        <img src="images/homescreen/click!/l.png" alt="">
+                        <img src="images/homescreen/click!/i.png" alt="">
+                        <img src="images/homescreen/click!/c_lowercase.png" alt="">
+                        <img src="images/homescreen/click!/k.png" alt="">
+                        <img src="images/homescreen/click!/!.png" alt="">
+                    </div>
+                </div>
+            </a>
+        </main>
+        <script>
+            const titleLink = document.querySelector(".title-screen-link");
+            const titleAudio = document.querySelector(".title-audio");
+            const clickAudio = document.querySelector(".click-audio");
+            const soundButton = document.querySelector(".sound-button");
+            let navigationPending = false;
+
+            titleAudio.addEventListener("playing", () => {
+                soundButton.hidden = true;
+            });
+
+            titleAudio.play().catch(() => {
+                soundButton.hidden = false;
+            });
+
+            soundButton.addEventListener("click", () => {
+                titleAudio.play().catch((error) => {
+                    console.error("Unable to play the title-screen music.", error);
+                    soundButton.textContent = "Sound unavailable";
+                });
+            });
+
+            titleLink.addEventListener("click", (event) => {
+                if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+                    return;
+                }
+
+                event.preventDefault();
+
+                if (navigationPending) {
+                    return;
+                }
+
+                navigationPending = true;
+                titleLink.classList.add("is-exiting");
+                titleAudio.pause();
+
+                const navigate = () => {
+                    window.location.assign(titleLink.href);
+                };
+
+                const letters = [...document.querySelectorAll(".click-letters img")];
+                const animationFinished = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+                    ? Promise.resolve()
+                    : Promise.all(letters.map((letter) => new Promise((resolve) => {
+                        letter.addEventListener("animationend", resolve, { once: true });
+                    })));
+                clickAudio.currentTime = 0;
+                const clickSoundFinished = new Promise((resolve) => {
+                    const finish = () => {
+                        clickAudio.removeEventListener("ended", finish);
+                        clickAudio.removeEventListener("error", finish);
+                        resolve();
+                    };
+
+                    clickAudio.addEventListener("ended", finish, { once: true });
+                    clickAudio.addEventListener("error", finish, { once: true });
+                    clickAudio.play().catch((error) => {
+                        console.error("Unable to play the title-screen click sound.", error);
+                        finish();
+                    });
+                });
+
+                Promise.all([animationFinished, clickSoundFinished]).then(navigate);
+            });
+        </script>
     </body>
-
-    <nav>
-        <ul>
-            <li><a href="#about-me">About Me</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-
-    <section class="about-me" id="about-me">
-        <h2>About Me</h2>
-        <h3>Hi! Welcome to my digital portfolio!</h3>
-        <img src="images/mariann.jpg" alt="Mariann Glasier" width="200">
-            <p>I'm Mariann, a computer science and interaction design student at the Georgia Institute of Technology, pursuing a certificate in marketing.
-            </p>
-            <p>I love the intersection of technology and design, and I'm particularly interested in web design, game development, and fashion tech. 
-                I'm a quick learner, and I love developing new skills and pushing myself out of my comfort zone. Even creating this website was a way for me to push myself.
-            </p>
-            <p>In my free time, I like to read, hike, and watch movies (some may call me a cinephile). Feel free to reach out if you want to nerd out about books! My current favorites are: Giovanni's Room by James Baldwin 
-                (really anything by James Baldwin), Frankenstein by Mary Shelley, and Love in the Time of Cholera by Gabriel Garcia Marquez.
-            </p>
-    </section>
-
-    <section class="experience" id="experience">
-        <h2>Experience</h2>
-        <p>Here you can find information about my professional background and work experience.</p>
-        <div class="experience-item">
-            <p>Brand Marketer</p>
-            <p>Bits of Good | Atlanta, GA</p>
-            <p>August 2026 - Present</p>
-        </div>
-        <div class="experience-item">
-            <p>Student Assistant</p>
-            <p>Georgia Manufacturing Extension Partnership | Atlanta, GA</p>
-            <p>March 2026 - Present</p>
-        </div>
-    </section>
-
-    <section class="projects" id="projects">
-        <h2>Projects</h2>
-        <p>Here you can find information about my various projects, including web applications, design work, and data visualizations.</p>
-
-        <div class="project-item">
-            <p>15 Love: A Tennis-Based Dating Game</p>
-            <p>GBA game development project with different stages, dialogue, and functional tennis mechanics.</p>
-            <p>C</p>
-        </div>
-
-        <div class="project-item">
-            <p>RebuildATL Website Redesign</p>
-            <p>Met with Rebuild to create a high-fidelity prototype for their website redesign and created a chatbot trained on company data for customer service.</p>
-            <p>Figma, AI</p>
-        </div>
-
-        <div class="project-item">
-            <p>GT Movies Store & BuzzList</p>
-            <p>A web application for browsing and reviewing movies, and a web application for selling and buying listings across campus.</p>
-            <p>Python, Django</p>
-        </div>
-
-        <div class="project-item">
-            <p>Piet Mondrian 3D Space</p>
-            <p>Created a 3D visualization of Piet Mondrian's compositions using HTML and AFrame.</p>
-            <p>HTML, AFrame</p>
-        </div>
-    </section>
-
-    <section class="skills" id="skills">
-        <h2>Technical and Professional Skills</h2>
-        <ul>
-            <li>Java</li>
-            <li>Python</li>
-            <li>HTML/CSS</li>
-            <li>C/C++</li>
-            <li>JavaScript</li>
-            <li>SQL</li>
-            <li>Git</li>
-            <li>UI/UX Design</li>
-            <li>Figma</li>
-            <li>Adobe Creative Suite</li>
-            <li>Data Analysis</li>
-            <li>Responsive Design</li>
-            <li>Agile Development</li>
-            <li>Team Collaboration</li>
-            <li>Problem Solving</li>
-           <li>Communication</li>
-        </ul>
-    </section>
-
-    <section class="contact" id="contact">
-        <h2>Contact</h2>
-        <p>Are you a recruiter? Do you like what you see? PLEASE get in touch with me!!!</p>
-        <a href="mailto:mglasier3@gatech.edu">Email</a>
-        <a href="https://www.linkedin.com/in/mariann-glasier/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        <a href="https://github.com/mariannglasier" target="_blank" rel="noopener noreferrer">GitHub</a>
-
-    </section>
-
-    <section class="footer">
-        <p>Made by Mariann</p>
-    </section>
 </html>
