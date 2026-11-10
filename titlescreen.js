@@ -2,20 +2,55 @@ const titleLink = document.querySelector(".title-screen-link");
 const titleAudio = document.querySelector(".title-audio");
 const clickAudio = document.querySelector(".click-audio");
 const soundButton = document.querySelector(".sound-button");
+const soundButtonImage = soundButton.querySelector("img");
+const soundButtonImages = {
+    mute: {
+        idle: "images/homescreen/sound_button/mute_idle.png",
+        click: "images/homescreen/sound_button/mute_click.png",
+    },
+    sound: {
+        idle: "images/homescreen/sound_button/sound_idle.png",
+        click: "images/homescreen/sound_button/sound_click.png",
+    },
+};
 let navigationPending = false;
+let soundEnabled = false;
+let soundButtonClickTimeout;
 
-titleAudio.addEventListener("playing", () => {
-    soundButton.hidden = true;
-});
+function updateSoundButton(isEnabled, wasClicked = false) {
+    soundEnabled = isEnabled;
+    const state = soundEnabled ? "sound" : "mute";
 
-titleAudio.play().catch(() => {
-    soundButton.hidden = false;
+    soundButton.setAttribute("aria-label", soundEnabled ? "Mute sound" : "Turn sound on");
+    soundButton.setAttribute("aria-pressed", String(soundEnabled));
+    soundButtonImage.src = soundButtonImages[state][wasClicked ? "click" : "idle"];
+
+    window.clearTimeout(soundButtonClickTimeout);
+    if (wasClicked) {
+        soundButtonClickTimeout = window.setTimeout(() => {
+            soundButtonImage.src = soundButtonImages[soundEnabled ? "sound" : "mute"].idle;
+        }, 180);
+    }
+}
+
+titleAudio.play().then(() => {
+    updateSoundButton(true);
+}).catch(() => {
+    updateSoundButton(false);
 });
 
 soundButton.addEventListener("click", () => {
-    titleAudio.play().catch((error) => {
+    if (soundEnabled) {
+        titleAudio.pause();
+        updateSoundButton(false, true);
+        return;
+    }
+
+    titleAudio.play().then(() => {
+        updateSoundButton(true, true);
+    }).catch((error) => {
         console.error("Unable to play the title-screen music.", error);
-        soundButton.textContent = "Sound unavailable";
+        updateSoundButton(false);
     });
 });
 
